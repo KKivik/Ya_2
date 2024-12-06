@@ -25,6 +25,10 @@ class Decoder:
 
 				if os.path.isfile(self.drive_letter + ":/key.txt") == False:
 					raise No_Key_On_Flash
+
+				self.walk_to_decode(self.encrypted_path)
+
+
 		else:
 			raise No_Flash_Drive
 
@@ -71,6 +75,7 @@ class Decoder:
 
 	def walk(self, temp_path): #Бегает по директории и шифрует файлs
 		names = os.listdir(temp_path)
+		#print(names)
 
 		for name in names:
 			path = os.path.join(temp_path, name)
@@ -80,6 +85,19 @@ class Decoder:
 				self.encrypt(path, self.key)
 			else:
 				self.walk(path)
+
+	def walk_to_decode(self, temp_path):
+		names = os.listdir(temp_path)
+		key = self.load_key()
+
+		for name in names:
+			path = os.path.join(temp_path, name)
+			ext = os.path.splitext(path)
+
+			if os.path.isfile(path):
+				self.decrypt(path, key)
+			else:
+				self.walk_to_decode(path)
 
 
 

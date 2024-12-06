@@ -12,6 +12,7 @@ class Cryptographer_window(QWidget):
         uic.loadUi('consts/Main_window.ui', self)  # Загружаем дизайн
         self.select_folder.clicked.connect(self.selecting_folder)
         self.encode_button.clicked.connect(self.encoding_select)
+        self.decode_button.clicked.connect(self.decoding_select)
         self.fname = ''
 
     def selecting_folder(self):
@@ -26,6 +27,20 @@ class Cryptographer_window(QWidget):
         else:
             try:
                 self.Encryptor = Decoder(self.fname, True)
+            except No_Flash_Drive:
+                self.status.setText('Вставьте флешку')
+                self.status.setStyleSheet("font: 15pt Comic Sans MS")
+            else:
+                self.status.setText('Успешно')
+                self.status.setStyleSheet("font: 15pt Comic Sans MS")
+
+    def decoding_select(self):
+        if self.fname == '':
+            self.status.setText('Выберите файл!')
+            self.status.setStyleSheet("font: 15pt Comic Sans MS")
+        else:
+            try:
+                self.Encryptor = Decoder(self.fname, False)
             except No_Flash_Drive:
                 self.status.setText('Вставьте флешку')
                 self.status.setStyleSheet("font: 15pt Comic Sans MS")
